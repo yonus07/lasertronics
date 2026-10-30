@@ -59,26 +59,26 @@ export function Navbar() {
           : "bg-transparent py-5 sm:py-6"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <nav className="flex items-center justify-between gap-4" aria-label="Main Navigation">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <nav className="flex items-center justify-between gap-2 sm:gap-4" aria-label="Main Navigation">
           {/* Logo & ValGrow attribution */}
           <Link
             to="/landing"
-            className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6BFF] rounded-lg p-1"
+            className="flex items-center gap-2 sm:gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6BFF] rounded-lg p-1 min-w-0"
           >
-            <div className="relative flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-[var(--landing-surface)] border border-[var(--landing-border)] shadow-md group-hover:border-[#22D3EE]/50 group-hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] transition-all duration-300">
+            <div className="relative flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-[var(--landing-surface)] border border-[var(--landing-border)] shadow-md group-hover:border-[#22D3EE]/50 group-hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] transition-all duration-300 shrink-0">
               <CircuitBoard className="h-5 w-5 sm:h-6 sm:w-6 text-[#2F6BFF] dark:text-[#22D3EE] group-hover:scale-110 transition-transform duration-300" />
               <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-[#FF4D2E]" />
             </div>
 
-            <div className="flex flex-col">
-              <div className="font-heading text-lg sm:text-xl font-bold tracking-tight text-[var(--landing-text-primary)] flex items-center gap-1.5">
+            <div className="flex flex-col min-w-0">
+              <div className="font-heading text-base sm:text-xl font-bold tracking-tight text-[var(--landing-text-primary)] flex items-center gap-1 sm:gap-1.5 truncate">
                 <span>LASERTRONICS</span>
-                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[#FF4D2E]/15 text-[#FF4D2E] font-mono-spec border border-[#FF4D2E]/30 uppercase font-semibold">
+                <span className="text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded-full bg-[#FF4D2E]/15 text-[#FF4D2E] font-mono-spec border border-[#FF4D2E]/30 uppercase font-semibold">
                   LK
                 </span>
               </div>
-              <span className="text-[10px] text-[var(--landing-text-muted)] font-mono-spec tracking-wider">
+              <span className="text-[9px] sm:text-[10px] text-[var(--landing-text-muted)] font-mono-spec tracking-wider truncate">
                 ENGINEERED BY <span className="text-[#2F6BFF] dark:text-[#22D3EE] font-medium">VALGROW LABS</span>
               </span>
             </div>
@@ -98,7 +98,7 @@ export function Navbar() {
           </div>
 
           {/* Right Action Stack */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             {/* Live InTouch Sync Pill (Desktop) */}
             <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--landing-surface)] border border-[var(--landing-border)] text-[11px] font-mono-spec text-[var(--landing-text-secondary)] shadow-xs">
               <span className="relative flex h-2 w-2">
@@ -114,7 +114,7 @@ export function Navbar() {
               onClick={toggleTheme}
               type="button"
               aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-              className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--landing-surface)] border border-[var(--landing-border)] text-[var(--landing-text-primary)] hover:border-[#2F6BFF]/40 shadow-xs transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6BFF]"
+              className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-[var(--landing-surface)] border border-[var(--landing-border)] text-[var(--landing-text-primary)] hover:border-[#2F6BFF]/40 shadow-xs transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6BFF]"
             >
               {theme === "dark" ? (
                 <Sun className="h-4 w-4 text-amber-300" />
@@ -127,7 +127,7 @@ export function Navbar() {
             <Link
               to="/cart"
               aria-label={`Shopping cart with ${count} items`}
-              className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--landing-surface)] border border-[var(--landing-border)] text-[var(--landing-text-primary)] hover:border-[#2F6BFF]/40 shadow-xs transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6BFF]"
+              className="relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-[var(--landing-surface)] border border-[var(--landing-border)] text-[var(--landing-text-primary)] hover:border-[#2F6BFF]/40 shadow-xs transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6BFF]"
             >
               <ShoppingCart className="h-4 w-4 text-[var(--landing-text-primary)]" />
               {count > 0 && (
@@ -156,7 +156,7 @@ export function Navbar() {
               type="button"
               aria-expanded={mobileMenuOpen}
               aria-label="Toggle navigation menu"
-              className="lg:hidden flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--landing-surface)] border border-[var(--landing-border)] text-[var(--landing-text-primary)] hover:border-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6BFF]"
+              className="lg:hidden flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-[var(--landing-surface)] border border-[var(--landing-border)] text-[var(--landing-text-primary)] hover:border-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6BFF]"
             >
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>

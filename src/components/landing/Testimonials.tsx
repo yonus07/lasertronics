@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { Star, ChevronLeft, ChevronRight, Quote, CheckCircle2, MapPin } from "lucide-react";
 
@@ -8,6 +8,20 @@ export function Testimonials() {
     align: "start",
     slidesToScroll: 1,
   });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    setScrollSnaps(emblaApi.scrollSnapList());
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+  }, [emblaApi, onSelect]);
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
@@ -72,7 +86,7 @@ export function Testimonials() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header with Navigation Arrows */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10 sm:mb-16">
           <div>
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[var(--landing-surface)] border border-[var(--landing-border)] text-xs font-mono-spec text-[#2F6BFF] dark:text-[#22D3EE] mb-4 shadow-xs">
               <Quote className="h-3.5 w-3.5 text-[#2F6BFF] dark:text-[#22D3EE]" />
@@ -87,12 +101,12 @@ export function Testimonials() {
           </div>
 
           {/* Carousel Navigation Buttons */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 shrink-0">
             <button
               onClick={scrollPrev}
               type="button"
               aria-label="Previous testimonial"
-              className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--landing-surface)] border border-[var(--landing-border)] text-[var(--landing-text-primary)] hover:border-[#2F6BFF]/50 hover:bg-[var(--landing-surface-subtle)] shadow-xs transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6BFF]"
+              className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-2xl bg-[var(--landing-surface)] border border-[var(--landing-border)] text-[var(--landing-text-primary)] hover:border-[#2F6BFF]/50 hover:bg-[var(--landing-surface-subtle)] shadow-xs transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6BFF]"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
@@ -100,7 +114,7 @@ export function Testimonials() {
               onClick={scrollNext}
               type="button"
               aria-label="Next testimonial"
-              className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--landing-surface)] border border-[var(--landing-border)] text-[var(--landing-text-primary)] hover:border-[#2F6BFF]/50 hover:bg-[var(--landing-surface-subtle)] shadow-xs transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6BFF]"
+              className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-2xl bg-[var(--landing-surface)] border border-[var(--landing-border)] text-[var(--landing-text-primary)] hover:border-[#2F6BFF]/50 hover:bg-[var(--landing-surface-subtle)] shadow-xs transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6BFF]"
             >
               <ChevronRight className="h-5 w-5" />
             </button>
@@ -109,22 +123,22 @@ export function Testimonials() {
 
         {/* Embla Carousel Viewport */}
         <div className="overflow-hidden cursor-grab active:cursor-grabbing" ref={emblaRef}>
-          <div className="flex -ml-6">
+          <div className="flex -ml-4 sm:-ml-6">
             {reviews.map((review, idx) => (
               <div
                 key={idx}
-                className="flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_33.333%] pl-6 min-w-0"
+                className="flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_33.333%] pl-4 sm:pl-6 min-w-0"
               >
-                <div className="rounded-3xl bg-[var(--landing-surface)] border border-[var(--landing-border)] backdrop-blur-xl p-8 flex flex-col justify-between h-full transition-all duration-300 hover:border-[#2F6BFF]/40 shadow-[var(--landing-card-shadow)]">
+                <div className="rounded-3xl bg-[var(--landing-surface)] border border-[var(--landing-border)] backdrop-blur-xl p-5 sm:p-8 flex flex-col justify-between h-full transition-all duration-300 hover:border-[#2F6BFF]/40 shadow-[var(--landing-card-shadow)]">
                   <div>
                     {/* Rating stars & verified badge */}
-                    <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center justify-between mb-5 sm:mb-6">
                       <div className="flex items-center gap-1 text-amber-500">
                         {[...Array(review.rating)].map((_, i) => (
                           <Star key={i} className="h-4 w-4 fill-amber-400" />
                         ))}
                       </div>
-                      <span className="flex items-center gap-1 text-[11px] font-mono-spec text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                      <span className="flex items-center gap-1 text-[10px] sm:text-[11px] font-mono-spec text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
                         <CheckCircle2 className="h-3 w-3" /> Verified Order
                       </span>
                     </div>
@@ -136,9 +150,9 @@ export function Testimonials() {
                   </div>
 
                   {/* Reviewer Details */}
-                  <div className="pt-6 border-t border-[var(--landing-border)] flex items-center gap-3.5">
+                  <div className="pt-5 sm:pt-6 border-t border-[var(--landing-border)] flex items-center gap-3.5">
                     <div
-                      className={`h-11 w-11 rounded-2xl bg-gradient-to-tr ${review.accent} flex items-center justify-center font-heading font-bold text-white text-sm shadow-md shrink-0`}
+                      className={`h-10 w-10 sm:h-11 sm:w-11 rounded-2xl bg-gradient-to-tr ${review.accent} flex items-center justify-center font-heading font-bold text-white text-sm shadow-md shrink-0`}
                     >
                       {review.avatar}
                     </div>
@@ -160,6 +174,25 @@ export function Testimonials() {
             ))}
           </div>
         </div>
+
+        {/* Carousel Dot Indicators */}
+        {scrollSnaps.length > 0 && (
+          <div className="flex items-center justify-center gap-2 mt-8">
+            {scrollSnaps.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => emblaApi?.scrollTo(index)}
+                type="button"
+                aria-label={`Go to slide ${index + 1}`}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  index === selectedIndex
+                    ? "w-8 bg-[#2F6BFF] shadow-[0_0_10px_rgba(47,107,255,0.6)]"
+                    : "w-2 bg-[var(--landing-border)] hover:bg-[var(--landing-text-muted)]"
+                }`}
+              />
+            ))}
+          </div>
+        )}
 
       </div>
     </section>

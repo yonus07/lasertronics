@@ -58,15 +58,13 @@ export function StatsStrip() {
         {/* Ambient Top Glow Line */}
         <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-[#22D3EE]/60 to-transparent" />
 
-        <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 divide-y sm:divide-y-0 sm:divide-x divide-[var(--landing-border)]">
-          {stats.map((stat, idx) => {
+        <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+          {stats.map((stat) => {
             const Icon = stat.icon;
             return (
               <div
                 key={stat.label}
-                className={`flex flex-col justify-between ${
-                  idx > 0 ? "pt-6 sm:pt-0 sm:pl-8" : ""
-                }`}
+                className="flex flex-col justify-between p-4 sm:p-5 lg:p-0 rounded-2xl sm:rounded-none bg-[var(--landing-surface-subtle)]/40 sm:bg-transparent border border-[var(--landing-border)] sm:border-0 lg:border-r lg:border-[var(--landing-border)] lg:pr-8 last:border-r-0"
               >
                 <div>
                   <div className="flex items-center justify-between mb-3">
@@ -98,14 +96,14 @@ export function StatsStrip() {
         </div>
 
         {/* Bottom micro-strip banner linking to shop */}
-        <div className="relative z-10 mt-8 pt-6 border-t border-[var(--landing-border)] flex flex-wrap items-center justify-between gap-4 text-xs font-mono-spec text-[var(--landing-text-muted)]">
+        <div className="relative z-10 mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-[var(--landing-border)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 text-xs font-mono-spec text-[var(--landing-text-muted)]">
           <div className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Hardware database live status: <strong className="text-emerald-500 dark:text-emerald-400">All 16,700+ SKUs active & verified</strong></span>
+            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+            <span className="leading-tight">Hardware database live status: <strong className="text-emerald-500 dark:text-emerald-400">All 16,700+ SKUs active & verified</strong></span>
           </div>
           <Link
             to="/shop"
-            className="inline-flex items-center gap-1 text-[#2F6BFF] dark:text-[#22D3EE] hover:underline transition-colors group"
+            className="inline-flex items-center gap-1 text-[#2F6BFF] dark:text-[#22D3EE] hover:underline transition-colors group shrink-0"
           >
             <span>Explore live inventory catalogue</span>
             <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

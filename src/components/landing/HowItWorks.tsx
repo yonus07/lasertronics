@@ -121,7 +121,7 @@ export function HowItWorks() {
               return (
                 <div
                   key={step.num}
-                  className="rounded-3xl bg-[var(--landing-surface)] border border-[var(--landing-border)] hover:border-[#2F6BFF]/40 backdrop-blur-xl p-8 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 shadow-[var(--landing-card-shadow)] group"
+                  className="rounded-3xl bg-[var(--landing-surface)] border border-[var(--landing-border)] hover:border-[#2F6BFF]/40 backdrop-blur-xl p-5 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 shadow-[var(--landing-card-shadow)] group"
                 >
                   <div>
                     {/* Top Step Number & Icon */}
@@ -168,10 +168,10 @@ export function HowItWorks() {
         </div>
 
         {/* Bottom CTA Banner */}
-        <div className="mt-16 text-center">
+        <div className="mt-12 sm:mt-16 text-center">
           <Link
             to="/shop"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl btn-shimmer font-heading text-sm font-semibold text-white shadow-[0_0_30px_rgba(47,107,255,0.45)] group"
+            className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl btn-shimmer font-heading text-sm font-semibold text-white shadow-[0_0_30px_rgba(47,107,255,0.45)] group w-full sm:w-auto text-center"
           >
             <span>Start Your Order Now</span>
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />

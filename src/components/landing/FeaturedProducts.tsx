@@ -175,18 +175,18 @@ export function FeaturedProducts() {
 
         {/* 8. 6 Featured Product Cards */}
         {!isLoading && !isError && filteredProducts.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
             {filteredProducts.map((product) => {
               const isAdded = !!addedMap[product.slug];
 
               return (
                 <div
                   key={product.slug}
-                  className="group rounded-3xl bg-[var(--landing-surface)] border border-[var(--landing-border)] hover:border-[#2F6BFF]/40 backdrop-blur-xl p-5 flex flex-col justify-between shadow-[var(--landing-card-shadow)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                  className="group rounded-3xl bg-[var(--landing-surface)] border border-[var(--landing-border)] hover:border-[#2F6BFF]/40 backdrop-blur-xl p-4 sm:p-5 flex flex-col justify-between shadow-[var(--landing-card-shadow)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                 >
                   <div>
                     {/* Image Area with Smooth Hover Zoom */}
-                    <div className="relative aspect-square w-full rounded-2xl bg-[var(--landing-surface-subtle)] border border-[var(--landing-border)] overflow-hidden flex items-center justify-center p-4 mb-5">
+                    <div className="relative aspect-square w-full rounded-2xl bg-[var(--landing-surface-subtle)] border border-[var(--landing-border)] overflow-hidden flex items-center justify-center p-3 sm:p-4 mb-4 sm:mb-5">
                       <Link
                         to="/product/$slug"
                         params={{ slug: product.slug }}

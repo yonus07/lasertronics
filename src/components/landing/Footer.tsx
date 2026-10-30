@@ -140,12 +140,12 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar: Copyright & Payment Badges */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono-spec text-[var(--landing-text-muted)]">
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono-spec text-[var(--landing-text-muted)] text-center sm:text-left">
           <div>
             © 2026 LASERTRONICS PVT LTD. All Rights Reserved. Engineered by <span className="text-[#2F6BFF] dark:text-[#22D3EE] font-medium">ValGrow Labs</span>.
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2 sm:gap-3">
             <span className="px-2.5 py-1 rounded bg-[var(--landing-surface)] border border-[var(--landing-border)] text-[11px] text-[var(--landing-text-secondary)] shadow-xs">
               Cash on Delivery (COD)
             </span>

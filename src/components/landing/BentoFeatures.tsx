@@ -40,7 +40,7 @@ function BentoCard({ children, className = "" }: BentoCardProps) {
     <div
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className={`bento-card group p-6 sm:p-8 flex flex-col justify-between overflow-hidden relative ${className}`}
+      className={`bento-card group p-5 sm:p-8 flex flex-col justify-between overflow-hidden relative ${className}`}
     >
       {/* Dynamic Cursor Spotlight Glare */}
       {mousePos && (

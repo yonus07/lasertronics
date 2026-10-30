@@ -63,7 +63,7 @@ export function FAQ() {
         </div>
 
         {/* Radix Accordion */}
-        <Accordion.Root type="single" collapsible defaultValue="faq-1" className="space-y-4">
+        <Accordion.Root type="single" collapsible defaultValue="faq-1" className="space-y-3 sm:space-y-4">
           {faqs.map((faq) => (
             <Accordion.Item
               key={faq.id}
@@ -71,21 +71,21 @@ export function FAQ() {
               className="rounded-2xl bg-[var(--landing-surface)] border border-[var(--landing-border)] overflow-hidden backdrop-blur-xl shadow-[var(--landing-card-shadow)] transition-all duration-200 data-[state=open]:border-[#2F6BFF]/40"
             >
               <Accordion.Header className="flex">
-                <Accordion.Trigger className="w-full flex items-center justify-between p-6 text-left group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6BFF]">
-                  <div className="flex items-center gap-4 pr-4">
-                    <span className="font-mono-spec text-xs font-bold text-[#2F6BFF] dark:text-[#22D3EE] px-2.5 py-1 rounded-lg bg-[var(--landing-surface-subtle)] border border-[var(--landing-border)]">
+                <Accordion.Trigger className="w-full flex items-center justify-between p-4 sm:p-6 text-left group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6BFF]">
+                  <div className="flex items-center gap-2.5 sm:gap-4 pr-2 sm:pr-4">
+                    <span className="font-mono-spec text-[11px] sm:text-xs font-bold text-[#2F6BFF] dark:text-[#22D3EE] px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg bg-[var(--landing-surface-subtle)] border border-[var(--landing-border)] shrink-0">
                       {faq.num}
                     </span>
-                    <span className="font-heading text-base sm:text-lg font-bold text-[var(--landing-text-primary)] group-hover:text-[#2F6BFF] dark:group-hover:text-[#22D3EE] transition-colors">
+                    <span className="font-heading text-sm sm:text-lg font-bold text-[var(--landing-text-primary)] group-hover:text-[#2F6BFF] dark:group-hover:text-[#22D3EE] transition-colors">
                       {faq.question}
                     </span>
                   </div>
-                  <ChevronDown className="h-5 w-5 text-[var(--landing-text-muted)] group-hover:text-[var(--landing-text-primary)] transition-transform duration-300 ease-out shrink-0 group-data-[state=open]:rotate-180" />
+                  <ChevronDown className="h-4 w-4 sm:h-5 sm:w-5 text-[var(--landing-text-muted)] group-hover:text-[var(--landing-text-primary)] transition-transform duration-300 ease-out shrink-0 group-data-[state=open]:rotate-180" />
                 </Accordion.Trigger>
               </Accordion.Header>
 
-              <Accordion.Content className="px-6 pb-6 pt-1 text-[var(--landing-text-secondary)] font-body text-sm sm:text-base leading-relaxed data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up overflow-hidden">
-                <div className="pl-12 border-l border-[var(--landing-border)] text-[var(--landing-text-secondary)]">
+              <Accordion.Content className="px-4 pb-4 sm:px-6 sm:pb-6 pt-1 text-[var(--landing-text-secondary)] font-body text-xs sm:text-base leading-relaxed data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up overflow-hidden">
+                <div className="pl-4 sm:pl-12 border-l border-[var(--landing-border)] text-[var(--landing-text-secondary)]">
                   {faq.answer}
                 </div>
               </Accordion.Content>
@@ -94,7 +94,7 @@ export function FAQ() {
         </Accordion.Root>
 
         {/* Support Help Card */}
-        <div className="mt-12 p-6 rounded-2xl bg-[var(--landing-surface)] border border-[var(--landing-border)] shadow-[var(--landing-card-shadow)] flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+        <div className="mt-8 sm:mt-12 p-4 sm:p-6 rounded-2xl bg-[var(--landing-surface)] border border-[var(--landing-border)] shadow-[var(--landing-card-shadow)] flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <div>
             <div className="font-heading text-sm font-bold text-[var(--landing-text-primary)]">
               Still have questions about a specific component?
@@ -105,7 +105,7 @@ export function FAQ() {
           </div>
           <Link
             to="/contact"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl btn-shimmer font-heading text-xs font-semibold text-white shrink-0 shadow-md"
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl btn-shimmer font-heading text-xs font-semibold text-white shrink-0 shadow-md w-full sm:w-auto text-center"
           >
             <span>Contact Support</span>
             <ArrowRight className="h-3.5 w-3.5" />
