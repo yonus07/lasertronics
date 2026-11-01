@@ -18,9 +18,10 @@ export const Route = createFileRoute("/landing")({
       },
       {
         name: "theme-color",
-        content: "#070B14",
+        content: "#0A192F",
       },
     ],
   }),
   component: LasertronicsCaseStudy,
 });
+
