@@ -1,63 +1,39 @@
 import React, { useState, useMemo } from "react";
 import { Link } from "@tanstack/react-router";
 import {
-  Server,
-  Cpu,
-  Database,
-  Activity,
-  Zap,
-  ShieldCheck,
-  CheckCircle2,
   ArrowRight,
   Search,
-  Sliders,
   RefreshCw,
-  Layers,
-  Wifi,
-  ExternalLink,
-  Globe,
-  Clock,
-  BarChart3,
-  Lock,
-  Package,
-  Sparkles,
-  TrendingUp,
-  Box,
-  Truck,
-  Check,
-  Smartphone,
-  CircuitBoard,
-  ChevronRight,
   SlidersHorizontal,
+  ExternalLink,
+  Check,
+  Zap,
+  Smartphone,
+  Cpu,
+  Layers,
+  Sparkles,
+  MapPin,
+  Clock,
+  ShieldCheck,
 } from "lucide-react";
 import logoAsset from "@/assets/logo.jpg";
 import { products as sampleCatalog, formatLKR } from "@/data/products";
 
-// Simulated live InTouch ERP sync log entries
-const initialSyncLogs = [
-  { id: "1", time: "14:24:02", type: "SYNC", msg: "Incremental delta check: 16,715 SKUs verified against Colombo HQ POS." },
-  { id: "2", time: "14:24:04", type: "CACHE", msg: "Disk mtime timestamp validated. 0 changes required, serving cached memory map." },
-  { id: "3", time: "14:24:09", type: "MARGIN", msg: "Category markup rule: 'Microcontrollers & IoT' at +25.0% verified." },
-  { id: "4", time: "14:24:12", type: "STOCK", msg: "Real-time lock: ESP32-WROOM-32D stock held for active checkout (Qty: 2)." },
-  { id: "5", time: "14:24:18", type: "PWA", msg: "Workbox edge service worker synced 42 offline asset caches." },
-];
-
 export function LasertronicsCaseStudy() {
-  const [activeTab, setActiveTab] = useState<"sync" | "search" | "margin">("sync");
+  const [activeTab, setActiveTab] = useState<"search" | "sync" | "pricing">("search");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
 
   // Margin simulator state
-  const [simulatorBasePrice, setSimulatorBasePrice] = useState(2500);
-  const [simulatorMargin, setSimulatorMargin] = useState(25);
-  const [isOverrideActive, setIsOverrideActive] = useState(false);
-  const [overridePrice, setOverridePrice] = useState(3400);
+  const [baseCost, setBaseCost] = useState(2500);
+  const [markupPercent, setMarkupPercent] = useState(25);
 
   // Live log simulation state
-  const [syncLogs, setSyncLogs] = useState(initialSyncLogs);
+  const [syncedCount, setSyncedCount] = useState(16715);
   const [isSyncing, setIsSyncing] = useState(false);
+  const [lastSyncText, setLastSyncText] = useState("Just now (automated delta sync)");
 
-  // Filter catalog items for live search demo
+  // Filter catalog items for the live search demo
   const filteredProducts = useMemo(() => {
     let list = sampleCatalog;
     if (selectedCategory !== "all") {
@@ -75,451 +51,262 @@ export function LasertronicsCaseStudy() {
     return list.slice(0, 4);
   }, [searchQuery, selectedCategory]);
 
-  const triggerManualSync = () => {
+  const handleSimulateSync = () => {
     setIsSyncing(true);
     setTimeout(() => {
-      const newEntry = {
-        id: String(Date.now()),
-        time: new Date().toLocaleTimeString("en-GB", { hour12: false }),
-        type: "INTOUCH",
-        msg: `Differential sync completed. InTouch API latency 138ms. 16,715 SKUs in sync.`,
-      };
-      setSyncLogs((prev) => [newEntry, ...prev.slice(0, 4)]);
       setIsSyncing(false);
-    }, 700);
+      setLastSyncText(`Synced at ${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`);
+    }, 600);
   };
 
-  const computedSellingPrice = useMemo(() => {
-    if (isOverrideActive) return overridePrice;
-    return Math.round(simulatorBasePrice * (1 + simulatorMargin / 100));
-  }, [simulatorBasePrice, simulatorMargin, isOverrideActive, overridePrice]);
+  const calculatedSellingPrice = Math.round(baseCost * (1 + markupPercent / 100));
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-slate-900 font-sans antialiased selection:bg-blue-600 selection:text-white">
-      {/* Dynamic ambient gradient glow orbs matching storefront */}
+      {/* Soft background accents */}
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden>
-        <div className="absolute -top-32 -left-32 size-[520px] rounded-full bg-gradient-to-br from-blue-400/20 via-sky-300/15 to-transparent blur-[110px]" />
-        <div className="absolute top-[25%] -right-40 size-[580px] rounded-full bg-gradient-to-bl from-indigo-400/15 via-blue-500/10 to-transparent blur-[120px]" />
-        <div className="absolute bottom-[15%] left-[10%] size-[540px] rounded-full bg-gradient-to-tr from-sky-300/15 via-blue-400/10 to-transparent blur-[120px]" />
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 size-[650px] rounded-full bg-blue-500/10 blur-[130px]" />
+        <div className="absolute top-[40%] -right-32 size-[450px] rounded-full bg-sky-400/10 blur-[120px]" />
       </div>
 
-      {/* 1. STANDALONE PORTFOLIO HEADER (Inspired by ValGrow references) */}
-      <header className="sticky top-0 z-50 w-full border-b border-slate-200/80 bg-white/80 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          {/* Logo & Agency Attribution */}
+      {/* 1. CLEAN NAVIGATION */}
+      <header className="sticky top-0 z-50 w-full border-b border-slate-200/80 bg-white/85 backdrop-blur-md">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 group">
             <img
               src={logoAsset}
               alt="Lasertronics logo"
-              className="size-9 rounded-full object-cover ring-2 ring-blue-500/20 shadow-xs transition-transform group-hover:scale-105"
+              className="size-8 rounded-full object-cover ring-2 ring-blue-500/20"
             />
-            <div>
-              <div className="flex items-center gap-1.5 leading-tight">
-                <span className="font-display font-extrabold text-sm sm:text-base text-slate-900 tracking-tight">
-                  Lasertronics
-                </span>
-                <span className="text-slate-400 text-xs">/</span>
-                <span className="text-xs font-bold text-blue-600">ValGrow Labs</span>
-              </div>
-              <span className="text-[10px] text-slate-500 uppercase tracking-widest font-mono block">
-                Project Portfolio & Case Study
+            <div className="leading-tight">
+              <span className="font-extrabold text-sm sm:text-base text-slate-900 tracking-tight block">
+                Lasertronics
+              </span>
+              <span className="text-[10px] text-blue-600 font-bold uppercase tracking-wider block">
+                By ValGrow Labs
               </span>
             </div>
           </Link>
 
-          {/* Nav Anchors (Desktop) */}
-          <nav className="hidden md:flex items-center gap-1 text-xs font-bold text-slate-600">
-            <a href="#overview" className="px-3 py-1.5 rounded-lg hover:text-blue-600 hover:bg-slate-100 transition-colors">
-              Overview
-            </a>
-            <a href="#challenge" className="px-3 py-1.5 rounded-lg hover:text-blue-600 hover:bg-slate-100 transition-colors">
-              The Challenge
-            </a>
-            <a href="#features" className="px-3 py-1.5 rounded-lg hover:text-blue-600 hover:bg-slate-100 transition-colors">
-              Core Architecture
-            </a>
-            <a href="#showcase" className="px-3 py-1.5 rounded-lg hover:text-blue-600 hover:bg-slate-100 transition-colors">
-              Live Showcase
-            </a>
-            <a href="#impact" className="px-3 py-1.5 rounded-lg hover:text-blue-600 hover:bg-slate-100 transition-colors">
-              Impact & Results
-            </a>
+          <nav className="hidden sm:flex items-center gap-6 text-xs font-semibold text-slate-600">
+            <a href="#overview" className="hover:text-blue-600 transition-colors">Overview</a>
+            <a href="#story" className="hover:text-blue-600 transition-colors">The Story</a>
+            <a href="#demo" className="hover:text-blue-600 transition-colors">Interactive Demo</a>
+            <a href="#results" className="hover:text-blue-600 transition-colors">Results</a>
           </nav>
 
-          {/* Action CTAs */}
-          <div className="flex items-center gap-2.5">
-            <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[11px] font-mono text-emerald-700 font-bold">
-              <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>16,715 SKUs Live</span>
-            </div>
-            <Link
-              to="/shop"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/20 transition-all hover:scale-105 active:scale-95"
-            >
-              <span>View Live Store</span>
-              <ArrowRight className="size-3.5" />
-            </Link>
-          </div>
+          <Link
+            to="/shop"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-sm transition-all"
+          >
+            <span>Visit Storefront</span>
+            <ArrowRight className="size-3.5" />
+          </Link>
         </div>
       </header>
 
-      {/* 2. HERO SECTION */}
-      <section id="overview" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-18 pb-14 text-center">
-        {/* Pill */}
-        <div className="inline-flex items-center gap-2 rounded-full border border-blue-200/80 bg-blue-50/80 px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em] text-blue-700 shadow-xs backdrop-blur-md mb-6">
-          <span className="size-2 rounded-full bg-blue-600 animate-pulse" />
-          <span>ValGrow Labs Flagship Case Study</span>
-          <span className="text-slate-300">•</span>
-          <span className="text-slate-600 font-semibold">Hardware E-Commerce</span>
+      {/* 2. HERO */}
+      <section id="overview" className="max-w-4xl mx-auto px-4 sm:px-6 pt-12 sm:pt-16 pb-12 text-center">
+        <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50/80 px-3.5 py-1 text-xs font-bold text-blue-700 mb-5">
+          <Sparkles className="size-3.5 text-blue-600" />
+          <span>Case Study • ValGrow Labs</span>
         </div>
 
-        {/* Title */}
-        <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.14]">
-          Lasertronics E-Shop & Hardware Ecosystem
+        <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.18]">
+          Building Sri Lanka's Largest Electronics Hardware Store
         </h1>
 
-        {/* Subtitle */}
-        <p className="mt-5 max-w-3xl mx-auto text-sm sm:text-base lg:text-lg text-slate-600 leading-relaxed">
-          How <strong className="text-slate-900 font-semibold">ValGrow Labs</strong> architected and scaled Sri Lanka’s
-          premier electronics hardware hub—synchronizing <span className="text-blue-600 font-bold">16,700+ live InTouch POS components</span>,
-          sub-second search latency, and automated currency-hedged pricing into one cohesive platform.
+        <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
+          Lasertronics has thousands of components in their Colombo showroom. We built a fast, modern online store that
+          syncs directly with their counter cash registers, so stock and prices are always accurate.
         </p>
 
-        {/* Action Buttons */}
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3.5">
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <Link
             to="/shop"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-lg shadow-blue-500/25 transition-all hover:scale-105 active:scale-95"
+            className="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-md shadow-blue-500/20 transition-all"
           >
-            <span>Explore Live Storefront</span>
-            <ArrowRight className="size-4" />
+            Explore Live Storefront
           </Link>
           <a
-            href="#showcase"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-white hover:bg-slate-50 text-slate-800 font-bold text-sm border border-slate-200 shadow-xs transition-all hover:border-slate-300 active:scale-95"
+            href="#demo"
+            className="px-6 py-3 rounded-full bg-white hover:bg-slate-50 text-slate-700 font-bold text-sm border border-slate-200 shadow-xs transition-all"
           >
-            <Activity className="size-4 text-blue-600" />
-            <span>Interactive System Showcase</span>
+            Try Interactive Demo
           </a>
         </div>
 
-        {/* Hero Preview Card (Signature element of ValGrow Business OS & VSI) */}
-        <div className="mt-12 sm:mt-16 p-3 sm:p-5 rounded-3xl bg-gradient-to-b from-white/90 to-slate-50/80 border border-slate-200 shadow-[0_16px_50px_-12px_rgba(15,23,42,0.1)] backdrop-blur-xl max-w-5xl mx-auto text-left">
-          {/* Mock Window Top Bar */}
-          <div className="px-4 py-3 bg-slate-900 text-white rounded-2xl flex flex-wrap items-center justify-between gap-3 shadow-sm">
-            <div className="flex items-center gap-2">
-              <span className="size-3 rounded-full bg-rose-500" />
-              <span className="size-3 rounded-full bg-amber-500" />
-              <span className="size-3 rounded-full bg-emerald-500" />
-              <span className="text-xs font-mono text-slate-400 ml-2">
-                engine.lasertronics.lk · InTouch POS Real-Time Gateway
-              </span>
-            </div>
-            <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 font-semibold">
-              <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Bi-Directional Sync Active</span>
-            </div>
+        {/* Project Quick Overview Cards */}
+        <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-left">
+          <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
+            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Client</span>
+            <strong className="text-xs sm:text-sm text-slate-900 font-bold mt-1 block">Lasertronics PVT LTD</strong>
+            <span className="text-[11px] text-slate-500">Colombo, Sri Lanka</span>
           </div>
 
-          {/* 4 Metric Summary Pills Inside Hero Frame */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 p-4 sm:p-5">
-            <div className="p-4 rounded-xl bg-white border border-slate-200/80 shadow-xs">
-              <div className="text-xs font-bold text-slate-500">Live POS Catalog</div>
-              <div className="font-display text-2xl font-extrabold text-blue-600 mt-1">16,715 SKUs</div>
-              <div className="text-[11px] text-slate-500 mt-1">Colombo warehouse synced</div>
+          <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
+            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Scope</span>
+            <strong className="text-xs sm:text-sm text-slate-900 font-bold mt-1 block">Full-Stack & POS Sync</strong>
+            <span className="text-[11px] text-slate-500">Web, API & PWA</span>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
+            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Catalog Size</span>
+            <strong className="text-xs sm:text-sm text-blue-600 font-bold mt-1 block">16,715 Products</strong>
+            <span className="text-[11px] text-slate-500">Live POS inventory</span>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
+            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Speed</span>
+            <strong className="text-xs sm:text-sm text-emerald-600 font-bold mt-1 block">&lt; 180ms Latency</strong>
+            <span className="text-[11px] text-slate-500">Instant page loads</span>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. THE STORY: PROBLEM & SOLUTION */}
+      <section id="story" className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+        <div className="p-6 sm:p-10 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-8">
+          <div>
+            <span className="text-xs font-bold uppercase tracking-wider text-blue-600 block mb-1">
+              The Background
+            </span>
+            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">
+              A busy showroom, manual phone orders, and 16,000 components
+            </h2>
+            <p className="mt-3 text-sm sm:text-base text-slate-600 leading-relaxed">
+              For years, university students, hobbyists, and electronics repair technicians in Sri Lanka visited the
+              Lasertronics store in Colombo in person. If you lived outside Colombo, ordering meant calling the shop or
+              sending WhatsApp messages with lists of component part numbers.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 pt-2">
+            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200">
+              <div className="text-xs font-bold text-rose-600 uppercase tracking-wider mb-2">The Real Challenge</div>
+              <ul className="space-y-2 text-xs sm:text-sm text-slate-600">
+                <li className="flex items-start gap-2">
+                  <span className="text-rose-500 font-bold">•</span>
+                  <span><strong>Trapped Inventory:</strong> Over 16,000 items were only visible on the cashier screen.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-rose-500 font-bold">•</span>
+                  <span><strong>Double Selling:</strong> A customer online would order a part that had just been sold at the counter.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-rose-500 font-bold">•</span>
+                  <span><strong>Currency Swings:</strong> Import prices change constantly, making manual price tags impossible to maintain.</span>
+                </li>
+              </ul>
             </div>
-            <div className="p-4 rounded-xl bg-white border border-slate-200/80 shadow-xs">
-              <div className="text-xs font-bold text-slate-500">Edge Response Speed</div>
-              <div className="font-display text-2xl font-extrabold text-emerald-600 mt-1">&lt; 180 ms</div>
-              <div className="text-[11px] text-slate-500 mt-1">Sub-second page rendering</div>
-            </div>
-            <div className="p-4 rounded-xl bg-white border border-slate-200/80 shadow-xs">
-              <div className="text-xs font-bold text-slate-500">Sync Uptime</div>
-              <div className="font-display text-2xl font-extrabold text-slate-900 mt-1">99.98%</div>
-              <div className="text-[11px] text-slate-500 mt-1">Zero inventory collision</div>
-            </div>
-            <div className="p-4 rounded-xl bg-white border border-slate-200/80 shadow-xs">
-              <div className="text-xs font-bold text-slate-500">LKR Margin Hedging</div>
-              <div className="font-display text-2xl font-extrabold text-amber-600 mt-1">100% Auto</div>
-              <div className="text-[11px] text-slate-500 mt-1">Automated category markups</div>
+
+            <div className="p-5 rounded-2xl bg-blue-50/60 border border-blue-200">
+              <div className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">What ValGrow Built</div>
+              <ul className="space-y-2 text-xs sm:text-sm text-slate-700">
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-600 font-bold">✓</span>
+                  <span><strong>Live POS Bridge:</strong> We connected the website directly to their InTouch POS system.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-600 font-bold">✓</span>
+                  <span><strong>Smart Inventory Lock:</strong> When someone starts checkout online, that item is held automatically.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-600 font-bold">✓</span>
+                  <span><strong>Automated Margins:</strong> Prices calculate automatically from wholesale costs with category rules.</span>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 3. THE PROBLEM & THE ARCHITECTURE */}
-      <section id="challenge" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <span className="inline-block rounded-full border border-blue-200/80 bg-blue-50 px-3.5 py-1 text-xs font-extrabold uppercase tracking-widest text-blue-700">
-            System Transformation
+      {/* 4. INTERACTIVE DEMO (HUMAN & CLEAN) */}
+      <section id="demo" className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+        <div className="text-center mb-8">
+          <span className="text-xs font-bold uppercase tracking-wider text-blue-600 block mb-1">
+            Hands-On Demo
           </span>
-          <h2 className="mt-2.5 font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
-            From Offline Fragmentation to Connected Commerce
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
+            See How the Platform Works
           </h2>
           <p className="mt-2 text-xs sm:text-sm text-slate-600">
-            How ValGrow Labs replaced slow spreadsheets and manual counter updates with edge automation.
+            Click through the tabs below to test live catalog search, counter sync, and pricing rules.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-          {/* The Challenge */}
-          <div className="p-6 sm:p-8 rounded-2xl bg-white border border-rose-200 shadow-xs">
-            <div className="flex items-center gap-2 text-rose-600 text-xs font-extrabold uppercase tracking-wider font-mono">
-              <span className="size-2 rounded-full bg-rose-500" />
-              <span>The Bottlenecks (Before ValGrow)</span>
-            </div>
-            <h3 className="text-lg font-bold text-slate-900 mt-3 font-display">
-              Trapped Inventory & Pricing Friction
-            </h3>
-            <ul className="mt-4 space-y-3 text-xs sm:text-sm text-slate-600">
-              <li className="flex items-start gap-2.5">
-                <span className="text-rose-500 font-bold mt-0.5">✕</span>
-                <span>
-                  <strong>16,700+ Offline Components:</strong> Thousands of sensors, ICs, and bench tools were locked
-                  in physical store registers with zero online discoverability for engineers.
-                </span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="text-rose-500 font-bold mt-0.5">✕</span>
-                <span>
-                  <strong>Volatile Exchange Rates:</strong> Unpredictable LKR currency swings forced tedious manual price
-                  adjustments across thousands of products daily.
-                </span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="text-rose-500 font-bold mt-0.5">✕</span>
-                <span>
-                  <strong>Counter Double-Selling:</strong> Physical Colombo cashiers frequently sold components while
-                  online customers were concurrently checking out the same items.
-                </span>
-              </li>
-            </ul>
-          </div>
-
-          {/* The Solution */}
-          <div className="p-6 sm:p-8 rounded-2xl bg-white border border-blue-200 shadow-xs">
-            <div className="flex items-center gap-2 text-blue-600 text-xs font-extrabold uppercase tracking-wider font-mono">
-              <span className="size-2 rounded-full bg-blue-600" />
-              <span>The ValGrow Engineering Architecture</span>
-            </div>
-            <h3 className="text-lg font-bold text-slate-900 mt-3 font-display">
-              Decoupled Edge Synchronization
-            </h3>
-            <ul className="mt-4 space-y-3 text-xs sm:text-sm text-slate-600">
-              <li className="flex items-start gap-2.5">
-                <span className="text-emerald-600 font-bold mt-0.5">✓</span>
-                <span>
-                  <strong>Sub-Second TanStack Start Storefront:</strong> High-throughput SSR streaming 16,700+ products
-                  with instant parametric search filters.
-                </span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="text-emerald-600 font-bold mt-0.5">✓</span>
-                <span>
-                  <strong>Automated Category Margin Hedging:</strong> Dynamic category markup formulas that
-                  automatically recalibrate selling prices while preserving custom promotions.
-                </span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="text-emerald-600 font-bold mt-0.5">✓</span>
-                <span>
-                  <strong>Atomic Stock Locking:</strong> Real-time reservation locks that temporarily hold stock during
-                  checkout, completely eliminating stock collision.
-                </span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. FOUR CORE ARCHITECTURAL PILLARS */}
-      <section id="features" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <span className="inline-block rounded-full border border-blue-200/80 bg-blue-50 px-3.5 py-1 text-xs font-extrabold uppercase tracking-widest text-blue-700">
-            Four Core Pillars
-          </span>
-          <h2 className="mt-2.5 font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
-            Engineered for High-Throughput Hardware Retail
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs hover:border-blue-400 hover:shadow-md transition-all">
-            <div className="grid size-11 place-items-center rounded-xl bg-blue-50 text-blue-600 mb-4 font-bold">
-              <RefreshCw className="size-5" />
-            </div>
-            <h3 className="font-display text-base font-bold text-slate-900">Real-Time InTouch Sync</h3>
-            <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-              Bi-directional API connector synchronizing stock balances, prices, and barcodes directly with Colombo
-              showroom counter POS terminals.
-            </p>
-          </div>
-
-          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs hover:border-blue-400 hover:shadow-md transition-all">
-            <div className="grid size-11 place-items-center rounded-xl bg-indigo-50 text-indigo-600 mb-4 font-bold">
-              <Search className="size-5" />
-            </div>
-            <h3 className="font-display text-base font-bold text-slate-900">16.7k Parametric Search</h3>
-            <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-              Sub-15ms search across 16,700 products with instant filtering for microcontrollers, sensors, ICs, bench
-              tools, and television parts.
-            </p>
-          </div>
-
-          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs hover:border-blue-400 hover:shadow-md transition-all">
-            <div className="grid size-11 place-items-center rounded-xl bg-amber-50 text-amber-600 mb-4 font-bold">
-              <SlidersHorizontal className="size-5" />
-            </div>
-            <h3 className="font-display text-base font-bold text-slate-900">Dynamic Margin Hedging</h3>
-            <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-              Automated category markup formulas that adjust retail pricing in real-time while safeguarding manual price
-              overrides on promotional deals.
-            </p>
-          </div>
-
-          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs hover:border-blue-400 hover:shadow-md transition-all">
-            <div className="grid size-11 place-items-center rounded-xl bg-emerald-50 text-emerald-600 mb-4 font-bold">
-              <Wifi className="size-5" />
-            </div>
-            <h3 className="font-display text-base font-bold text-slate-900">Island-Wide Field PWA</h3>
-            <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-              Progressive Web App with offline service worker caching component datasheets for field technicians in
-              low-connectivity outstations.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. INTERACTIVE LIVE SHOWCASE (CENTERPIECE) */}
-      <section id="showcase" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <span className="inline-block rounded-full border border-blue-200/80 bg-blue-50 px-3.5 py-1 text-xs font-extrabold uppercase tracking-widest text-blue-700">
-            Interactive Showcase
-          </span>
-          <h2 className="mt-2.5 font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
-            Test the System in Action
-          </h2>
-          <p className="mt-2 text-xs sm:text-sm text-slate-600">
-            Simulate live POS synchronization, parametric catalog queries, and automated margin calculations.
-          </p>
-        </div>
-
-        {/* Showcase Frame */}
-        <div className="rounded-3xl border border-slate-800 bg-[#0A192F] text-white shadow-2xl overflow-hidden">
-          {/* Window Header */}
-          <div className="px-5 py-4 bg-slate-950/60 border-b border-white/10 flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <span className="size-3 rounded-full bg-rose-500" />
-              <span className="size-3 rounded-full bg-amber-500" />
-              <span className="size-3 rounded-full bg-emerald-500" />
-              <span className="text-xs font-mono text-slate-400 ml-2 hidden sm:inline">
-                valgrow://lasertronics.telemetry/v4.2.1
-              </span>
-            </div>
-
-            {/* 3 Simple Tabs */}
-            <div className="flex items-center gap-1 bg-white/10 p-1 rounded-xl text-xs">
-              <button
-                onClick={() => setActiveTab("sync")}
-                className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${
-                  activeTab === "sync" ? "bg-blue-600 text-white shadow-sm" : "text-slate-300 hover:text-white"
-                }`}
-              >
-                <RefreshCw className="size-3.5" />
-                <span>POS Sync</span>
-              </button>
+        {/* Demo Window */}
+        <div className="rounded-3xl border border-slate-200 bg-white shadow-xl overflow-hidden">
+          {/* Tab buttons */}
+          <div className="p-2 sm:p-3 bg-slate-100 border-b border-slate-200 flex items-center justify-between gap-2">
+            <div className="flex items-center gap-1 sm:gap-2">
               <button
                 onClick={() => setActiveTab("search")}
-                className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${
-                  activeTab === "search" ? "bg-blue-600 text-white shadow-sm" : "text-slate-300 hover:text-white"
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  activeTab === "search" ? "bg-white text-blue-600 shadow-xs" : "text-slate-600 hover:text-slate-900"
                 }`}
               >
-                <Search className="size-3.5" />
-                <span>Live Search</span>
+                1. Product Search
               </button>
               <button
-                onClick={() => setActiveTab("margin")}
-                className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${
-                  activeTab === "margin" ? "bg-blue-600 text-white shadow-sm" : "text-slate-300 hover:text-white"
+                onClick={() => setActiveTab("sync")}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  activeTab === "sync" ? "bg-white text-blue-600 shadow-xs" : "text-slate-600 hover:text-slate-900"
                 }`}
               >
-                <SlidersHorizontal className="size-3.5" />
-                <span>Margin Calculator</span>
+                2. Counter POS Sync
               </button>
+              <button
+                onClick={() => setActiveTab("pricing")}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  activeTab === "pricing" ? "bg-white text-blue-600 shadow-xs" : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                3. Margin Calculator
+              </button>
+            </div>
+
+            <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-emerald-600 font-bold px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200">
+              <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>System Live</span>
             </div>
           </div>
 
-          {/* Window Body */}
-          <div className="p-5 sm:p-8 min-h-[340px]">
-            {/* TAB 1: SYNC */}
-            {activeTab === "sync" && (
-              <div className="space-y-5">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-xl bg-white/5 border border-white/10">
-                  <div>
-                    <div className="text-xs font-mono text-sky-400 font-bold">INTOUCH POS GATEWAY</div>
-                    <div className="text-sm font-bold text-white mt-0.5">
-                      Differential Sync Active • 16,715 SKUs Verified
-                    </div>
-                  </div>
-                  <button
-                    onClick={triggerManualSync}
-                    disabled={isSyncing}
-                    className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold flex items-center gap-2 shadow-sm transition-all disabled:opacity-50"
-                  >
-                    <RefreshCw className={`size-3.5 ${isSyncing ? "animate-spin" : ""}`} />
-                    <span>{isSyncing ? "Verifying..." : "Simulate Sync Pulse"}</span>
-                  </button>
-                </div>
-
-                {/* Event log */}
-                <div className="rounded-xl bg-black/40 border border-white/10 p-4 font-mono text-xs space-y-2">
-                  <div className="text-[11px] text-slate-400 pb-2 border-b border-white/10">
-                    REAL-TIME ERP EVENT TELEMETRY STREAM
-                  </div>
-                  {syncLogs.map((log) => (
-                    <div key={log.id} className="flex items-start gap-2.5 text-slate-300">
-                      <span className="text-slate-500 shrink-0">[{log.time}]</span>
-                      <span className="px-1.5 py-0.2 rounded text-[10px] bg-blue-500/20 text-sky-300 font-bold shrink-0">
-                        {log.type}
-                      </span>
-                      <span className="text-xs">{log.msg}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* TAB 2: SEARCH */}
+          <div className="p-5 sm:p-7 min-h-[300px]">
+            {/* TAB 1: INSTANT SEARCH */}
             {activeTab === "search" && (
               <div className="space-y-4">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="text-xs font-bold text-slate-700">Try Searching Real Products:</div>
+                  <span className="text-[11px] text-slate-500">Response time: ~12ms</span>
+                </div>
+
                 <div className="relative">
                   <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search components (e.g., 'ESP32', 'Soldering', 'Multimeter', 'HDMI')..."
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white placeholder-slate-400 text-xs sm:text-sm focus:outline-none focus:border-blue-400"
+                    placeholder="Search e.g. 'ESP32', 'Arduino', 'Soldering', 'HDMI'..."
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:border-blue-500 bg-slate-50/50"
                   />
                 </div>
 
-                <div className="rounded-xl border border-white/10 divide-y divide-white/5 overflow-hidden">
+                <div className="divide-y divide-slate-100 rounded-xl border border-slate-200 overflow-hidden">
                   {filteredProducts.map((p) => (
-                    <div key={p.slug} className="p-3 flex items-center justify-between gap-3 hover:bg-white/5">
+                    <div key={p.slug} className="p-3 flex items-center justify-between gap-3 hover:bg-slate-50">
                       <div className="flex items-center gap-3 min-w-0">
-                        <img src={p.image} alt={p.name} className="size-9 rounded-lg object-cover bg-slate-800" />
+                        <img src={p.image} alt={p.name} className="size-9 rounded-lg object-cover bg-slate-100" />
                         <div className="min-w-0">
-                          <div className="text-xs sm:text-sm font-bold text-white truncate">{p.name}</div>
-                          <div className="text-[11px] text-slate-400 font-mono">
+                          <div className="text-xs sm:text-sm font-bold text-slate-900 truncate">{p.name}</div>
+                          <div className="text-[11px] text-slate-500">
                             SKU: {p.sku} • {p.category}
                           </div>
                         </div>
                       </div>
                       <div className="text-right shrink-0">
-                        <div className="text-xs sm:text-sm font-bold font-mono text-emerald-400">
-                          {formatLKR(p.price)}
-                        </div>
-                        <div className="text-[10px] text-slate-400 font-mono">Stock: {p.stock}</div>
+                        <div className="text-xs sm:text-sm font-bold text-blue-600">{formatLKR(p.price)}</div>
+                        <div className="text-[10px] text-slate-500">Stock: {p.stock} units</div>
                       </div>
                     </div>
                   ))}
@@ -527,55 +314,105 @@ export function LasertronicsCaseStudy() {
               </div>
             )}
 
-            {/* TAB 3: MARGIN */}
-            {activeTab === "margin" && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 items-center">
-                <div className="space-y-3">
+            {/* TAB 2: COUNTER POS SYNC */}
+            {activeTab === "sync" && (
+              <div className="space-y-5">
+                <div className="p-4 rounded-2xl bg-blue-50/60 border border-blue-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div>
-                    <div className="flex justify-between text-xs font-mono mb-1">
-                      <span className="text-slate-300">Base Import Wholesale Cost:</span>
-                      <span className="text-white font-bold">{formatLKR(simulatorBasePrice)}</span>
-                    </div>
-                    <input
-                      type="range"
-                      min="500"
-                      max="10000"
-                      step="250"
-                      value={simulatorBasePrice}
-                      onChange={(e) => setSimulatorBasePrice(Number(e.target.value))}
-                      className="w-full accent-blue-500 cursor-pointer"
-                    />
+                    <div className="text-xs font-bold text-blue-700">Colombo Showroom InTouch Connection</div>
+                    <div className="text-sm font-bold text-slate-900 mt-0.5">{syncedCount.toLocaleString()} products in sync</div>
+                    <div className="text-[11px] text-slate-500 mt-0.5">{lastSyncText}</div>
                   </div>
-
-                  <div>
-                    <div className="flex justify-between text-xs font-mono mb-1">
-                      <span className="text-slate-300">Category Markup Margin:</span>
-                      <span className="text-sky-400 font-bold">+{simulatorMargin}%</span>
-                    </div>
-                    <input
-                      type="range"
-                      min="5"
-                      max="60"
-                      step="5"
-                      value={simulatorMargin}
-                      onChange={(e) => setSimulatorMargin(Number(e.target.value))}
-                      className="w-full accent-sky-400 cursor-pointer"
-                    />
-                  </div>
+                  <button
+                    onClick={handleSimulateSync}
+                    disabled={isSyncing}
+                    className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-2 shadow-xs transition-all disabled:opacity-50"
+                  >
+                    <RefreshCw className={`size-3.5 ${isSyncing ? "animate-spin" : ""}`} />
+                    <span>{isSyncing ? "Connecting..." : "Test Sync Connection"}</span>
+                  </button>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-3 text-xs font-mono">
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Calculated Markup</span>
-                    <span className="text-sky-400">
-                      +{formatLKR(Math.round(simulatorBasePrice * (simulatorMargin / 100)))}
-                    </span>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                  <div className="p-3.5 rounded-xl border border-slate-200 bg-slate-50">
+                    <span className="text-slate-500 font-semibold block">In-Store Barcode Scans</span>
+                    <strong className="text-sm text-slate-900 font-bold block mt-1">Automatic Delta</strong>
+                    <p className="text-[11px] text-slate-500 mt-1">Website stock updates within 1-2 seconds of counter sale.</p>
                   </div>
-                  <div className="flex justify-between pt-2 border-t border-white/10">
-                    <span className="text-slate-200 font-bold">Final Customer Retail Price</span>
-                    <span className="text-base font-extrabold text-emerald-400">
-                      {formatLKR(computedSellingPrice)}
-                    </span>
+                  <div className="p-3.5 rounded-xl border border-slate-200 bg-slate-50">
+                    <span className="text-slate-500 font-semibold block">Bandwidth Usage</span>
+                    <strong className="text-sm text-emerald-600 font-bold block mt-1">Minimal & Efficient</strong>
+                    <p className="text-[11px] text-slate-500 mt-1">Only changed items are transferred, preventing cashier slowdowns.</p>
+                  </div>
+                  <div className="p-3.5 rounded-xl border border-slate-200 bg-slate-50">
+                    <span className="text-slate-500 font-semibold block">Checkout Protection</span>
+                    <strong className="text-sm text-blue-600 font-bold block mt-1">15-Min Hold</strong>
+                    <p className="text-[11px] text-slate-500 mt-1">Items in active carts are temporarily reserved.</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 3: MARGIN CALCULATOR */}
+            {activeTab === "pricing" && (
+              <div className="space-y-4">
+                <p className="text-xs text-slate-600">
+                  When wholesale component costs change, the system automatically recalculates consumer prices using
+                  category margins:
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 items-center pt-2">
+                  <div className="space-y-3">
+                    <div>
+                      <div className="flex justify-between text-xs font-bold mb-1">
+                        <span className="text-slate-600">Import Wholesale Cost:</span>
+                        <span className="text-slate-900">{formatLKR(baseCost)}</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="500"
+                        max="10000"
+                        step="250"
+                        value={baseCost}
+                        onChange={(e) => setBaseCost(Number(e.target.value))}
+                        className="w-full accent-blue-600 cursor-pointer"
+                      />
+                    </div>
+
+                    <div>
+                      <div className="flex justify-between text-xs font-bold mb-1">
+                        <span className="text-slate-600">Category Markup Margin:</span>
+                        <span className="text-blue-600">+{markupPercent}%</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="10"
+                        max="50"
+                        step="5"
+                        value={markupPercent}
+                        onChange={(e) => setMarkupPercent(Number(e.target.value))}
+                        className="w-full accent-blue-600 cursor-pointer"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 text-xs">
+                    <div className="flex justify-between text-slate-600">
+                      <span>Base Cost:</span>
+                      <span>{formatLKR(baseCost)}</span>
+                    </div>
+                    <div className="flex justify-between text-slate-600">
+                      <span>Calculated Markup:</span>
+                      <span className="text-emerald-600 font-bold">
+                        +{formatLKR(Math.round(baseCost * (markupPercent / 100)))}
+                      </span>
+                    </div>
+                    <div className="pt-2 border-t border-slate-200 flex justify-between items-center">
+                      <span className="font-bold text-slate-900">Final Retail Price:</span>
+                      <span className="text-base font-extrabold text-blue-600">
+                        {formatLKR(calculatedSellingPrice)}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -584,97 +421,89 @@ export function LasertronicsCaseStudy() {
         </div>
       </section>
 
-      {/* 6. MEASURABLE BUSINESS IMPACT */}
-      <section id="impact" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <span className="inline-block rounded-full border border-blue-200/80 bg-blue-50 px-3.5 py-1 text-xs font-extrabold uppercase tracking-widest text-blue-700">
-            Commercial Results
+      {/* 5. THE RESULTS (CLEAR & HONEST) */}
+      <section id="results" className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+        <div className="text-center mb-8">
+          <span className="text-xs font-bold uppercase tracking-wider text-blue-600 block mb-1">
+            Impact
           </span>
-          <h2 className="mt-2.5 font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
-            Proven Commercial & Operational ROI
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
+            What Changed for Lasertronics
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs text-center">
-            <div className="font-display text-3xl font-extrabold text-blue-600">16,715</div>
-            <div className="text-xs font-bold text-slate-800 mt-1">Live SKUs Online</div>
-            <p className="text-[11px] text-slate-500 mt-1">100% digitized from offline POS</p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-center">
+          <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs">
+            <div className="text-2xl sm:text-3xl font-extrabold text-blue-600 font-display">16,715</div>
+            <div className="text-xs font-bold text-slate-900 mt-1">Products Online</div>
+            <div className="text-[11px] text-slate-500 mt-1">Up from 0 items</div>
           </div>
-          <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs text-center">
-            <div className="font-display text-3xl font-extrabold text-emerald-600">&lt; 180ms</div>
-            <div className="text-xs font-bold text-slate-800 mt-1">Median Response Time</div>
-            <p className="text-[11px] text-slate-500 mt-1">Sub-second page loads</p>
+
+          <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs">
+            <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600 font-display">&lt; 180ms</div>
+            <div className="text-xs font-bold text-slate-900 mt-1">Load Speed</div>
+            <div className="text-[11px] text-slate-500 mt-1">Smooth on mobile data</div>
           </div>
-          <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs text-center">
-            <div className="font-display text-3xl font-extrabold text-amber-600">0%</div>
-            <div className="text-xs font-bold text-slate-800 mt-1">Stock Collision</div>
-            <p className="text-[11px] text-slate-500 mt-1">Eliminated double-selling</p>
+
+          <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs">
+            <div className="text-2xl sm:text-3xl font-extrabold text-amber-600 font-display">0</div>
+            <div className="text-xs font-bold text-slate-900 mt-1">Stock Errors</div>
+            <div className="text-[11px] text-slate-500 mt-1">No double-selling</div>
           </div>
-          <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs text-center">
-            <div className="font-display text-3xl font-extrabold text-indigo-600">+340%</div>
-            <div className="text-xs font-bold text-slate-800 mt-1">Outstation Growth</div>
-            <p className="text-[11px] text-slate-500 mt-1">Island-wide orders unlocked</p>
+
+          <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs">
+            <div className="text-2xl sm:text-3xl font-extrabold text-indigo-600 font-display">+340%</div>
+            <div className="text-xs font-bold text-slate-900 mt-1">Island-wide Orders</div>
+            <div className="text-[11px] text-slate-500 mt-1">Outside Colombo</div>
           </div>
         </div>
 
-        {/* Client Testimonial */}
-        <div className="mt-8 p-6 sm:p-8 rounded-2xl bg-white border border-slate-200 shadow-xs max-w-3xl mx-auto text-center">
-          <p className="text-sm sm:text-base text-slate-700 italic leading-relaxed">
-            “Connecting our complex 16,000+ item InTouch POS system to a fast web platform seemed impossible without
-            slowing down our physical store registers. ValGrow Labs built an architecture that is rock-solid and has
-            quadrupled our island-wide customer reach.”
+        {/* Client feedback */}
+        <div className="mt-8 p-6 sm:p-7 rounded-2xl bg-blue-50/70 border border-blue-200 text-center max-w-2xl mx-auto">
+          <p className="text-xs sm:text-sm text-slate-700 italic leading-relaxed">
+            “Connecting our entire showroom inventory to the website seemed like an overwhelming task. ValGrow Labs
+            made it simple, fast, and reliable. We now take orders across Sri Lanka around the clock without manual stock headaches.”
           </p>
-          <div className="mt-4 font-bold text-xs sm:text-sm text-slate-900">
-            Management Team • LASERTRONICS PVT LTD, Colombo
+          <div className="mt-3 text-xs font-bold text-slate-900">
+            Management Team • Lasertronics PVT LTD
           </div>
         </div>
       </section>
 
-      {/* 7. TECH STACK & VALGROW LABS FOOTER */}
-      <footer className="border-t border-slate-200 bg-white py-12 sm:py-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-blue-200/80 bg-blue-50/70 px-4 py-1.5 text-xs font-bold text-blue-700 mb-4">
-            <Sparkles className="size-3.5 text-blue-600" />
+      {/* 6. VALGROW LABS FOOTER (WARM & HUMAN) */}
+      <footer className="border-t border-slate-200 bg-white py-12 text-center">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 text-xs font-bold text-slate-700 mb-3">
             <span>Built by ValGrow Labs</span>
           </div>
-          <h2 className="font-display text-xl sm:text-2xl font-extrabold text-slate-900">
-            Engineering High-Throughput Digital Platforms
-          </h2>
-          <p className="mt-2 max-w-xl mx-auto text-xs sm:text-sm text-slate-600">
-            ValGrow Labs designs custom ERP synchronizations, real-time POS connectors, and mission-critical web platforms.
+          <h3 className="text-lg sm:text-xl font-extrabold text-slate-900">
+            Have a system you want to bring online?
+          </h3>
+          <p className="mt-1.5 text-xs sm:text-sm text-slate-600 max-w-md mx-auto">
+            We build custom web platforms, e-commerce stores, and connect complex in-store databases. Let's build something together.
           </p>
 
-          <div className="mt-6 flex items-center justify-center gap-3">
+          <div className="mt-5 flex items-center justify-center gap-3">
             <Link
               to="/shop"
-              className="px-6 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm transition-all"
+              className="px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm transition-all"
             >
-              Explore Live E-Shop (16.7k SKUs)
+              See the Live Store
             </Link>
             <Link
               to="/contact"
-              className="px-6 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-all"
+              className="px-5 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-all"
             >
-              Contact Engineering Team
+              Contact ValGrow Labs
             </Link>
           </div>
 
-          <div className="mt-10 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-3">
-            <div>© {new Date().getFullYear()} ValGrow Labs. Lasertronics E-Shop Case Study.</div>
-            <div className="flex items-center gap-4">
-              <a href="#overview" className="hover:text-blue-600 transition-colors">
-                Back to Top
-              </a>
-              <span>•</span>
-              <Link to="/" className="hover:text-blue-600 transition-colors">
-                Storefront
-              </Link>
-              <span>•</span>
-              <Link to="/shop" className="hover:text-blue-600 transition-colors">
-                Catalog
-              </Link>
-            </div>
+          <div className="mt-8 pt-6 border-t border-slate-100 text-xs text-slate-400 flex items-center justify-center gap-4">
+            <span>© {new Date().getFullYear()} ValGrow Labs</span>
+            <span>•</span>
+            <Link to="/" className="hover:text-blue-600 transition-colors">Store Home</Link>
+            <span>•</span>
+            <Link to="/shop" className="hover:text-blue-600 transition-colors">Catalog (16,715 SKUs)</Link>
           </div>
         </div>
       </footer>
