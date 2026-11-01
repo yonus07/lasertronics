@@ -130,6 +130,26 @@ function Index() {
 
   return (
     <SiteLayout>
+      {/* ValGrow Labs Case Study Announcement Banner */}
+      <div className="bg-gradient-to-r from-[#070B14] via-[#0D152A] to-[#070B14] border-b border-blue-500/20 py-2.5 px-4 text-center">
+        <div className="container-page flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-xs">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-500/20 text-sky-300 font-mono text-[11px] font-semibold">
+            <Sparkles className="size-3 text-sky-400" />
+            <span>ValGrow Labs Flagship Engineering</span>
+          </div>
+          <span className="text-slate-300 hidden sm:inline">
+            Discover how ValGrow Labs engineered Lasertronics' 16,700+ SKU hardware ecosystem.
+          </span>
+          <Link
+            to="/case-study"
+            className="inline-flex items-center gap-1 text-sky-400 hover:text-white font-bold underline underline-offset-4 transition-colors"
+          >
+            <span>Read Technical Case Study</span>
+            <ArrowRight className="size-3" />
+          </Link>
+        </div>
+      </div>
+
       {/* 1. Hero Carousel */}
       <Hero />
 

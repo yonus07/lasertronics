@@ -101,6 +101,14 @@ export function Header() {
 
           {/* Right: Store info & customer care */}
           <div className="hidden md:flex items-center gap-4 text-slate-300 shrink-0 font-medium">
+            <Link
+              to="/case-study"
+              className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-500/20 text-sky-300 hover:text-white border border-blue-400/30 transition-all font-semibold"
+            >
+              <Sparkles className="size-3 text-sky-400" />
+              <span>ValGrow Case Study</span>
+            </Link>
+            <span className="text-slate-700">|</span>
             <div className="flex items-center gap-1.5 text-slate-400">
               <MapPin className="size-3.5 text-sky-400" />
               <span>Colombo 00110, Sri Lanka</span>
@@ -319,6 +327,14 @@ export function Header() {
 
             {/* Right: Secondary Links (Deals, Solutions, About, Contact) */}
             <div className="flex items-center gap-1 text-xs font-medium text-slate-600">
+              <Link
+                to="/case-study"
+                className="h-8 px-2.5 rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100 font-bold inline-flex items-center gap-1 transition-colors"
+              >
+                <Cpu className="size-3.5 text-blue-600" />
+                <span>ValGrow Case Study</span>
+              </Link>
+              <span className="text-slate-300">|</span>
               <Link
                 to="/shop"
                 className="h-8 px-2.5 rounded-lg text-rose-600 hover:bg-rose-50 font-bold inline-flex items-center gap-1"
